@@ -1,6 +1,7 @@
 package com.numanstc.ppmtool.services;
 
 import com.numanstc.ppmtool.domain.Project;
+import com.numanstc.ppmtool.exceptions.ProjectIdException;
 import com.numanstc.ppmtool.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,13 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Project saveOrUpdate(Project project){
+    public Project saveOrUpdate(Project project) {
 
-
-        return projectRepository.save(project);
+        try {
+            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            return projectRepository.save(project);
+        } catch (Exception e) {
+            throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exist.");
+        }
     }
 }
