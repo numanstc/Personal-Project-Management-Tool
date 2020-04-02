@@ -1,5 +1,7 @@
 package com.numanstc.ppmtool.services;
 
+import com.numanstc.ppmtool.domain.Project;
+import com.numanstc.ppmtool.exceptions.ProjectIdException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import java.util.Map;
 @Service
 public class MapValidationErrorService {
 
-    public ResponseEntity<?> MapValidationService(BindingResult result) {
+    public ResponseEntity<?> mapValidationService(BindingResult result) {
 //        Binding Error hataları barındıran bir interface. hataları bu şekilde yönetebilirz.
         if (result.hasErrors()) {
 
