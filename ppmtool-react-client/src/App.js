@@ -3,6 +3,7 @@ import Dashboard from "./componenets/Dashboard";
 import Header from "./componenets/Layout/Header";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import AddProject from "./componenets/Project/AddProject";
+import UpdateProject from "./componenets/Project/UpdateProject";
 import { Provider } from "react-redux";
 import store from "./store";
 
@@ -17,6 +18,7 @@ function App() {
           <Header />
           <Route path="/dashboard" component={Dashboard} />
           <Route exact path="/addProject" component={AddProject} />
+          <Route exact path="/updateProject/:id" component={UpdateProject} />
         </div>
       </Router>
     </Provider>
