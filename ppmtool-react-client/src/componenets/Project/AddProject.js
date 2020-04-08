@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createProject } from "../../actions/projectActions";
+import classnames from "classnames";
 
 class AddProject extends Component {
   constructor() {
@@ -11,11 +12,20 @@ class AddProject extends Component {
       projectIdentifier: "",
       description: "",
       start_date: "",
-      end_date: ""
+      end_date: "",
+      errors: {} // hatalar burada olacak globalde değil
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+  // life cycle hooks
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
   }
 
   onChange(e) {
@@ -44,6 +54,7 @@ class AddProject extends Component {
   }
 
   render() {
+    const { errors } = this.state;
     return (
       <div className="project">
         <div className="container">
@@ -55,32 +66,50 @@ class AddProject extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-c ontrol-lg "
+                    className={classnames("form-control form-c ontrol-lg", {
+                      "is-invalid": errors.projectName
+                    })}
+                    //burada error varsa "is-invalid" bootstrap classini ekiyor.
                     placeholder="Project Name"
                     name="projectName"
                     value={this.props.projectName}
                     onChange={this.onChange}
                   />
+                  {errors.projectName && (
+                    <div className="invalid-feedback">{errors.projectName}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
+                    className={classnames("form-control form-c ontrol-lg", {
+                      "is-invalid": errors.projectIdentifier
+                    })}
                     placeholder="Unique Project ID"
                     name="projectIdentifier"
                     value={this.props.projectIdentifier}
                     onChange={this.onChange}
                   />
+                  {errors.projectIdentifier && (
+                    <div className="invalid-feedback">
+                      {errors.projectIdentifier}
+                    </div>
+                  )}
                 </div>
                 {/*<!-- disabled for Edit Only!! remove "disabled" for the Create operation -->*/}
                 <div className="form-group">
                   <textarea
-                    className="form-control form-control-lg"
+                    className={classnames("form-control form-c ontrol-lg", {
+                      "is-invalid": errors.description
+                    })}
                     placeholder="Project Description"
                     name="description"
                     value={this.props.description}
                     onChange={this.onChange}
                   ></textarea>
+                  {errors.description && (
+                    <div className="invalid-feedback">{errors.description}</div>
+                  )}
                 </div>
                 <h6>Start Date</h6>
                 <div className="form-group">
@@ -117,11 +146,16 @@ class AddProject extends Component {
 }
 
 AddProject.propTypes = {
-  createProject: PropTypes.func.isRequired
+  createProject: PropTypes.func.isRequired, // buradaki func bunnun fonksiyon olduğunu belirtiyor
+  errors: PropTypes.object.isRequired // buradaki object bunun object olduğunu belirtiyor.
 };
 
+const mapstateProps = state => ({
+  errors: state.errors // -> buradaki state glabal projectActions dan geliyor
+});
+
 export default connect(
-  null,
+  mapstateProps,
   { createProject }
 )(AddProject);
 //null -> spate mapnini nasıl olduğunu gösteriyoru
