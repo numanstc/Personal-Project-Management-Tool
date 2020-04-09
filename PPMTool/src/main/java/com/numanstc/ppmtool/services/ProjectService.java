@@ -1,7 +1,9 @@
 package com.numanstc.ppmtool.services;
 
+import com.numanstc.ppmtool.domain.Backlog;
 import com.numanstc.ppmtool.domain.Project;
 import com.numanstc.ppmtool.exceptions.ProjectIdException;
+import com.numanstc.ppmtool.repositories.BacklogRepository;
 import com.numanstc.ppmtool.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,15 +11,27 @@ import org.springframework.stereotype.Service;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final BacklogRepository backlogRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository) {
         this.projectRepository = projectRepository;
+        this.backlogRepository = backlogRepository;
     }
 
     public Project saveOrUpdate(Project project) {
 
         try {
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+
+            if (project.getId()  == null){
+                Backlog backlog = new Backlog();
+                backlog.setProject(project);
+                backlog.setProjectIdentifier(project.getProjectIdentifier());
+                project.setBacklog(backlog);
+            } else {
+                // TODO burada db sorgusunu azaltan bir çözüm bul
+                project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier()));
+            }
             return projectRepository.save(project);
         } catch (Exception e) {
             throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exist.");
