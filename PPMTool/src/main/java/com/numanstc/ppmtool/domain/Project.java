@@ -28,6 +28,7 @@ public class Project {
     private Date end_date;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING ,pattern = "yyyy-mm-dd")
+    @Column(updatable = false)
     private Date created_At;
     @JsonFormat(shape = JsonFormat.Shape.STRING ,pattern = "yyyy-mm-dd")
     private Date updated_At;
