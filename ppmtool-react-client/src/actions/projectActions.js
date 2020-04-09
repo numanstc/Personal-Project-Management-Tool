@@ -28,10 +28,16 @@ export const getProjects = () => async dispatch => {
 export const getProject = (id, history) => async dispatch => {
   // const res = axios.get("http://localhost:8080/api/project/" + id);
   // const res = axios.get(`http://localhost:8080/api/project/${id}`);
-  axios.get(`http://localhost:8080/api/project/${id}`).then(res => {
-    dispatch({
-      type: GET_PROJECT,
-      payload: res.data
+  axios
+    .get(`http://localhost:8080/api/project/${id}`)
+    .then(res => {
+      dispatch({
+        type: GET_PROJECT,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      // eğer istenilen adres yoksa yönlendirme yapıyor.
+      history.push("/dashboard");
     });
-  });
 };
