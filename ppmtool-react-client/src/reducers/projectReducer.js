@@ -22,7 +22,7 @@ export default function(state = initialState, action) {
     case DELETE_PROJECT:
       return {
         ...state,
-        projects: state.projects.filter(
+        projects: state.project.filter(
           project => project.projectIdentifier !== action.payload
         )
       };
