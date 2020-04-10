@@ -4,6 +4,7 @@ import com.numanstc.ppmtool.domain.Backlog;
 import com.numanstc.ppmtool.domain.Project;
 import com.numanstc.ppmtool.domain.ProjectTask;
 import com.numanstc.ppmtool.exceptions.ProjectNotFoundException;
+import com.numanstc.ppmtool.exceptions.ProjectTaskIdentifierException;
 import com.numanstc.ppmtool.repositories.BacklogRepository;
 import com.numanstc.ppmtool.repositories.ProjectRepository;
 import com.numanstc.ppmtool.repositories.ProjectTaskRepository;
@@ -86,5 +87,15 @@ public class ProjectTaskService {
                     + sequence + "' does not exist in project '" + backlogId + "'.");
 
         return projectTask;
+    }
+
+    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlogId, String sequence) {
+
+        ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence);
+
+        if (!projectTask.getProjectIdentifier().equals(sequence))
+            throw new ProjectTaskIdentifierException("Project Task Identifier does not changeable.");
+
+        return projectTaskRepository.save(updatedTask);
     }
 }

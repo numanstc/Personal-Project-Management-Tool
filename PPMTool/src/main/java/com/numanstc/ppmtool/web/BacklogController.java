@@ -25,8 +25,7 @@ public class BacklogController {
     private MapValidationErrorService mapValidationErrorService;
 
     @PostMapping("/{backlog_id}")
-    public ResponseEntity<?> addProjectTaskToBacklog(@Valid @RequestBody ProjectTask projectTask,
-                                                     BindingResult result,
+    public ResponseEntity<?> addProjectTaskToBacklog(@Valid @RequestBody ProjectTask projectTask, BindingResult result,
                                                      @PathVariable String backlog_id) {
 
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
@@ -34,7 +33,7 @@ public class BacklogController {
 
         ProjectTask createdProjectTask = projectTaskService.addProjectTask(backlog_id, projectTask);
 
-        return new ResponseEntity <>(createdProjectTask, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdProjectTask, HttpStatus.CREATED);
     }
 
     @GetMapping("/{backlog_id}")
@@ -44,12 +43,23 @@ public class BacklogController {
     }
 
     @GetMapping("/{backlog_id}/{pt_id}")
-    public ResponseEntity<?> getProjectTask(@PathVariable String backlog_id,
-                                            @PathVariable String pt_id) {
+    public ResponseEntity<?> getProjectTask(@PathVariable String backlog_id, @PathVariable String pt_id) {
 
         ProjectTask projectTask = projectTaskService.findPTByProjectSequence(backlog_id, pt_id);
 
         return new ResponseEntity<>(projectTask, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{backlog_id}/{pt_id}")
+    public ResponseEntity<?> getProjectTask(@Valid @RequestBody ProjectTask projectTask, BindingResult result,
+                                            @PathVariable String backlog_id, @PathVariable String pt_id) {
+
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
+
+        ProjectTask updatedProjectTask = projectTaskService.updateByProjectSequence(projectTask, backlog_id, pt_id);
+
+        return new ResponseEntity<>(updatedProjectTask, HttpStatus.OK);
     }
 
 }
