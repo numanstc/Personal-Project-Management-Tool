@@ -29,7 +29,7 @@ public class ProjectService {
                 backlog.setProjectIdentifier(project.getProjectIdentifier());
                 project.setBacklog(backlog);
             } else {
-                // TODO burada db sorgusunu azaltan bir çözüm bul
+                // TODO burada db sorgusunu azaltan bir çözüm ara
                 project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier()));
             }
             return projectRepository.save(project);
