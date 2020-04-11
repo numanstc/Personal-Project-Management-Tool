@@ -11,6 +11,8 @@ import com.numanstc.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProjectTaskService {
 
@@ -89,7 +91,7 @@ public class ProjectTaskService {
         return projectTask;
     }
 
-    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlogId, String sequence) {
+    public ProjectTask updatePTByProjectSequence(ProjectTask updatedTask, String backlogId, String sequence) {
 
         ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence);
 
@@ -97,5 +99,12 @@ public class ProjectTaskService {
             throw new ProjectTaskIdentifierException("Project Task Identifier does not changeable.");
 
         return projectTaskRepository.save(updatedTask);
+    }
+
+    public void deletePTByProjectSequence(String backlogId, String sequence) {
+
+        ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence);
+
+        projectTaskRepository.delete(projectTask);
     }
 }
