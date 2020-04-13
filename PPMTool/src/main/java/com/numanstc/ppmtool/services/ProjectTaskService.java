@@ -95,7 +95,7 @@ public class ProjectTaskService {
 
         ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence);
 
-        if (!projectTask.getProjectIdentifier().equals(sequence))
+        if (!projectTask.getProjectIdentifier().equals(backlogId))
             throw new ProjectTaskIdentifierException("Project Task Identifier does not changeable.");
 
         return projectTaskRepository.save(updatedTask);
