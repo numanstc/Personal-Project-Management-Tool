@@ -8,6 +8,7 @@ import ProjectBoard from "./componenets/ProjectBoard/ProjectBoard";
 import { Provider } from "react-redux";
 import store from "./store";
 import AddProjectTask from "./componenets/ProjectBoard/ProjectTasks/AddProjectTask";
+import UpdateProjectTask from "./componenets/ProjectBoard/ProjectTasks/UpdateProjectTask";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,6 +24,11 @@ function App() {
           <Route exact path="/updateProject/:id" component={UpdateProject} />
           <Route exact path="/projectBoard/:id" component={ProjectBoard} />
           <Route exact path="/addProjectTask/:id" component={AddProjectTask} />
+          <Route
+            exact
+            path="/updateProjectTask/:backlog_id/:pt_id"
+            component={UpdateProjectTask}
+          />
         </div>
       </Router>
     </Provider>
