@@ -30,8 +30,8 @@ public class ProjectTask {
     @Column(updatable = false)
     private String projectIdentifier;
 
-    private Date created_At;
-    private Date updated_At;
+    private Date create_At;
+    private Date update_At;
 
     public ProjectTask() {
     }
@@ -101,19 +101,19 @@ public class ProjectTask {
     }
 
     public Date getCreated_At() {
-        return created_At;
+        return create_At;
     }
 
     public void setCreated_At(Date created_At) {
-        this.created_At = created_At;
+        this.create_At = created_At;
     }
 
     public Date getUpdated_At() {
-        return updated_At;
+        return update_At;
     }
 
     public void setUpdated_At(Date updated_At) {
-        this.updated_At = updated_At;
+        this.update_At = updated_At;
     }
 
     public Backlog getBacklog() {
@@ -126,12 +126,12 @@ public class ProjectTask {
 
     @PrePersist
     protected void onCreate() {
-        this.created_At = new Date();
+        this.create_At = new Date();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updated_At = new Date();
+        this.update_At = new Date();
     }
 
     @Override
@@ -145,8 +145,8 @@ public class ProjectTask {
                 ", priority=" + priority +
                 ", dueDate=" + dueDate +
                 ", projectIdentifier='" + projectIdentifier + '\'' +
-                ", created_At=" + created_At +
-                ", updated_At=" + updated_At +
+                ", create_At=" + create_At +
+                ", update_At=" + update_At +
                 '}';
     }
 }
