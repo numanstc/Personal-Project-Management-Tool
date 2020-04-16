@@ -50,15 +50,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //        Cross-Origin Resource Sharing
         http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-                .and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //stateless rest api için jwt sessionlarını tut
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // stateless rest api için jwt sessionlarını tut
                 .and()
-                .headers().frameOptions().sameOrigin() // to enable H2 db
+                .headers().frameOptions().sameOrigin() //To enable H2 Database
                 .and()
                 .authorizeRequests()
-                .antMatchers("/",
+                .antMatchers(
+                        "/",
                         "/favicon.ico",
                         "/**/*.png",
                         "/**/*.gif",
@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js"
-                        ).permitAll()
+                ).permitAll()
                 .antMatchers(SIGN_UP_URLS).permitAll()
                 .antMatchers(H2_URL).permitAll() // for h2 database console
                 .anyRequest().authenticated();

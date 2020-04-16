@@ -1,4 +1,4 @@
-package com.numanstc.ppmtool.security;
+package com.numanstc.ppmtool.services;
 
 import com.numanstc.ppmtool.domain.User;
 import com.numanstc.ppmtool.exceptions.UsernameAlreadyExistException;
