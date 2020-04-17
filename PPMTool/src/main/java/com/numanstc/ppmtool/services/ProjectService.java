@@ -2,9 +2,11 @@ package com.numanstc.ppmtool.services;
 
 import com.numanstc.ppmtool.domain.Backlog;
 import com.numanstc.ppmtool.domain.Project;
+import com.numanstc.ppmtool.domain.User;
 import com.numanstc.ppmtool.exceptions.ProjectIdException;
 import com.numanstc.ppmtool.repositories.BacklogRepository;
 import com.numanstc.ppmtool.repositories.ProjectRepository;
+import com.numanstc.ppmtool.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,15 +14,23 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final BacklogRepository backlogRepository;
+    private final UserRepository userRepository;
 
-    public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository) {
+    public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository, UserRepository userRepository) {
         this.projectRepository = projectRepository;
         this.backlogRepository = backlogRepository;
+        this.userRepository = userRepository;
     }
 
-    public Project saveOrUpdate(Project project) {
+    public Project saveOrUpdate(Project project, String username) {
 
         try {
+
+            User user = userRepository.findByUsername(username);
+
+            project.setUser(user);
+            project.setProjectLeader(username);
+
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
             if (project.getId()  == null){
