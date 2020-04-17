@@ -27,6 +27,16 @@ public class ProjectService {
 
     public Project saveOrUpdate(Project project, String username) {
 
+        if (project.getId() != null) {
+            Project existingProject = projectRepository.findByProjectIdentifier(project.getProjectIdentifier());
+
+            if (existingProject != null && !existingProject.getProjectLeader().equals(username))
+                throw new ProjectNotFoundException("Project not found in your account");
+            else if (existingProject != null)
+                throw new ProjectNotFoundException(
+                        String.format("Project ID '%s' cannot be updated because it doesn't exist", project.getProjectIdentifier()));
+        }
+
         try {
 
             User user = userRepository.findByUsername(username);
@@ -42,12 +52,11 @@ public class ProjectService {
                 backlog.setProjectIdentifier(project.getProjectIdentifier());
                 project.setBacklog(backlog);
             } else {
-                // TODO burada db sorgusunu azaltan bir çözüm ara
                 project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier()));
             }
             return projectRepository.save(project);
         } catch (Exception e) {
-            throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exist.");
+            throw new ProjectIdException("Project ID '" + project.getProjectIdentifier() + "' already exist.");
         }
     }
 
