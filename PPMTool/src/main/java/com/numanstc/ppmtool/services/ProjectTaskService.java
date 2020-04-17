@@ -11,8 +11,6 @@ import com.numanstc.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class ProjectTaskService {
 
@@ -60,21 +58,14 @@ public class ProjectTaskService {
 
     public Iterable<ProjectTask> findBacklogById(String id, String username) {
 
-        Project project = projectService.findProjectByIdentifier(id, username);
-
-        if (project == null) {
-            throw new ProjectNotFoundException("Project with Id '" + id + "' does not exist.");
-        }
-
+        projectService.findProjectByIdentifier(id, username);
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 
-    public ProjectTask findPTByProjectSequence(String backlogId, String sequence) {
+    public ProjectTask findPTByProjectSequence(String backlogId, String sequence, String username) {
 
         // make sure we are searching on the right backlog
-        Backlog backlog = backlogRepository.findByProjectIdentifier(backlogId);
-        if (backlog == null)
-            throw new ProjectNotFoundException("Project with ID '" + backlogId + "' does not exist.");
+        projectService.findProjectByIdentifier(backlogId, username);
 
         // make sure that our task exist
         ProjectTask projectTask = projectTaskRepository.findByProjectSequence(sequence);
@@ -89,20 +80,18 @@ public class ProjectTaskService {
         return projectTask;
     }
 
-    public ProjectTask updatePTByProjectSequence(ProjectTask updatedTask, String backlogId, String sequence) {
+    public ProjectTask updatePTByProjectSequence(ProjectTask updatedTask, String backlogId, String sequence, String username) {
 
-        ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence);
+        ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence, username);
 
-        if (!projectTask.getProjectIdentifier().equals(backlogId))
+        if (!projectTask.getProjectIdentifier().equals(updatedTask.getProjectIdentifier()))
             throw new ProjectTaskIdentifierException("Project Task Identifier does not changeable.");
 
         return projectTaskRepository.save(updatedTask);
     }
 
-    public void deletePTByProjectSequence(String backlogId, String sequence) {
+    public void deletePTByProjectSequence(String backlogId, String sequence, String username) {
 
-        ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence);
-
-        projectTaskRepository.delete(projectTask);
+        projectTaskRepository.delete(findPTByProjectSequence(backlogId, sequence, username));
     }
 }
