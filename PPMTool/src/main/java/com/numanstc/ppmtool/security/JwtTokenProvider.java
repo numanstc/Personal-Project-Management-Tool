@@ -1,8 +1,7 @@
 package com.numanstc.ppmtool.security;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import com.numanstc.ppmtool.domain.User;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +40,31 @@ public class JwtTokenProvider {
 
 
     // Validate the token
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+            return true;
+        } catch (SignatureException exception) {
+            System.out.println("Invalid JWT Signature && SignatureException");
+        } catch (MalformedJwtException exception) {
+            System.out.println("Invalid JWT token && MalformedJwtException");
+        } catch (ExpiredJwtException exception) {
+            System.out.println("Expired JWT Exception && ExpiredJwtException");
+        } catch (UnsupportedJwtException exception) {
+            System.out.println("Unsupported JWT Exception && UnsupportedJwtException");
+        } catch (IllegalArgumentException exception) {
+            System.out.println("JWT claims string is empty && IllegalArgumentException");
+        }
+        return false;
+    }
 
     // Get userId from the token
+    public Long getUserIdFromJwt(String token) {
+//        Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+//        return Long.parseLong((String) claims.get("id"));
+        Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        String id = (String)claims.get("id");
+
+        return Long.parseLong(id);
+    }
 }
