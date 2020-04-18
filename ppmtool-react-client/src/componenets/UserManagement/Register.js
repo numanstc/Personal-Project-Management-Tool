@@ -57,13 +57,17 @@ class Register extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.fullName
+                    })}
                     placeholder="Full Name"
                     name="fullName"
-                    required
                     value={this.props.fullName}
                     onChange={this.onChange}
                   />
+                  {errors.fullName && (
+                    <div className="invalid-feedback">{errors.fullName}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <input
@@ -83,12 +87,17 @@ class Register extends Component {
                 <div className="form-group">
                   <input
                     type="password"
-                    className="form-control form-control-lg"
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.password
+                    })}
                     placeholder="Password"
                     name="password"
                     value={this.props.password}
                     onChange={this.onChange}
                   />
+                  {errors.password && (
+                    <div className="invalid-feedback">{errors.password}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <input
