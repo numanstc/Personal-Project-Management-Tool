@@ -66,7 +66,7 @@ class AddProject extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames("form-control form-c ontrol-lg", {
+                    className={classnames("form-control form-control-lg", {
                       "is-invalid": errors.projectName
                     })}
                     //burada error varsa "is-invalid" bootstrap classini ekiyor.
@@ -154,8 +154,5 @@ const mapstateProps = state => ({
   errors: state.errors // -> buradaki state glabal projectActions dan geliyor
 });
 
-export default connect(
-  mapstateProps,
-  { createProject }
-)(AddProject);
+export default connect(mapstateProps, { createProject })(AddProject);
 //null -> spate mapnini nasıl olduğunu gösteriyoru
