@@ -27,6 +27,10 @@ class Login extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		if (this.props.security.validToken) {
+			this.props.history.push("/dashboard");
+		}
+
 		if (nextProps.errors) {
 			this.setState({
 				errors: nextProps.errors,
