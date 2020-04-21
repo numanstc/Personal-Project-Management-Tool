@@ -1,7 +1,7 @@
 import React from "react";
 import Dashboard from "./componenets/Dashboard";
 import Header from "./componenets/Layout/Header";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AddProject from "./componenets/Project/AddProject";
 import UpdateProject from "./componenets/Project/UpdateProject";
 import ProjectBoard from "./componenets/ProjectBoard/ProjectBoard";
@@ -15,6 +15,7 @@ import Login from "./componenets/UserManagement/Login";
 import jwt_decode from "jwt-decode";
 import setJsonWebToken from "./securityUtils/setJsonWebToken";
 import { logout } from "./actions/securityActions";
+import SecuredRoute from "./securityUtils/SecuredRoute";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -55,16 +56,30 @@ function App() {
 					<Route exact path="/login" component={Login} />
 
 					{/*private Roues*/}
-					<Route path="/dashboard" component={Dashboard} />
-					<Route exact path="/addProject" component={AddProject} />
-					<Route exact path="/updateProject/:id" component={UpdateProject} />
-					<Route exact path="/projectBoard/:id" component={ProjectBoard} />
-					<Route exact path="/addProjectTask/:id" component={AddProjectTask} />
-					<Route
-						exact
-						path="/updateProjectTask/:backlog_id/:pt_id"
-						component={UpdateProjectTask}
-					/>
+					<Switch>
+						<SecuredRoute path="/dashboard" component={Dashboard} />
+						<SecuredRoute exact path="/addProject" component={AddProject} />
+						<SecuredRoute
+							exact
+							path="/updateProject/:id"
+							component={UpdateProject}
+						/>
+						<SecuredRoute
+							exact
+							path="/projectBoard/:id"
+							component={ProjectBoard}
+						/>
+						<SecuredRoute
+							exact
+							path="/addProjectTask/:id"
+							component={AddProjectTask}
+						/>
+						<SecuredRoute
+							exact
+							path="/updateProjectTask/:backlog_id/:pt_id"
+							component={UpdateProjectTask}
+						/>
+					</Switch>
 				</div>
 			</Router>
 		</Provider>
