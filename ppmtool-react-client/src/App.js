@@ -14,6 +14,7 @@ import Register from "./componenets/UserManagement/Register";
 import Login from "./componenets/UserManagement/Login";
 import jwt_decode from "jwt-decode";
 import setJsonWebToken from "./securityUtils/setJsonWebToken";
+import { logout } from "./actions/securityActions";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -34,7 +35,8 @@ if (jwt) {
 	const currentTime = Date.now() / 1000;
 	if (decoded_jwt.exp <= currentTime) {
 		// handle logout
-		// window.location.href = "/";
+		store.dispatch(logout());
+		window.location.href = "/";
 	}
 }
 
